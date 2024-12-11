@@ -10,7 +10,7 @@ with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
     long_description = fh.read()
 
 # Define the version of the package
-VERSION = '1.0.14'
+VERSION = '1.0.0'
 
 # Short description of the package
 DESCRIPTION = '''ThreadyQ is a Python library designed to simplify and extend the capabilities of threading and queue management. This package provides an abstraction layer over Python's built-in threading and queue modules, enabling developers to create, manage, and synchronize tasks efficiently in multi-threaded applications.'''
