@@ -53,7 +53,39 @@ class ThreadyQ:
             finally:
                 self.task_queue.task_done()  # Mark the task as done
 
-    def put_the_task(self, task: Callable, schedule_time: Optional[str] = None, *args: Any):
+
+    def put_the_task(self, task: Callable, *args: Any):
+        """
+        Add a task to the queue with optional arguments.
+        
+        :param task: The task function to be executed.
+        :param args: The arguments to pass to the task.
+        """
+        if not callable(task):
+            raise ValueError("The task must be a callable function or method.")
+        
+        self.task_queue.put((datetime.now(), task, args))  # Put the task and its args in the queue
+        print(f"Task {task.__name__} added. Current task count: {self.get_task_count()}")
+
+
+    def get_task_count(self) -> int:
+        """
+        Get the approximate number of tasks in the queue.
+        
+        :return: Number of tasks in the queue.
+        """
+        return self.task_queue.qsize()
+    
+
+    def join(self):
+        """
+        Wait for all tasks to complete 
+        """
+        self.task_queue.join()
+        print_response(prefix="", msg="All tasks completed.", color="success")
+        
+    
+    def put_the_task_with_scheduler(self, task: Callable, schedule_time: Optional[str] = None, *args: Any):
         """
         Add a task to the queue with optional arguments.
         
@@ -80,20 +112,3 @@ class ThreadyQ:
         
         self.task_queue.put((scheduled_time, task, args))  # Put the task and its args in the queue with scheduled time
         print(f"Task {task.__name__} added. Current task count: {self.get_task_count()}")
-
-
-    def get_task_count(self) -> int:
-        """
-        Get the approximate number of tasks in the queue.
-        
-        :return: Number of tasks in the queue.
-        """
-        return self.task_queue.qsize()
-    
-
-    def join(self):
-        """
-        Wait for all tasks to complete 
-        """
-        self.task_queue.join()
-        print_response(prefix="", msg="All tasks completed.", color="success")
